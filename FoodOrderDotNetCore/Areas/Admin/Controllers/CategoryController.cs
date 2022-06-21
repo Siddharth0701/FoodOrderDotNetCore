@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FoodOrderDotNetCore.Areas.Admin
+namespace FoodOrderDotNetCore.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class CategoryController : Controller
@@ -20,7 +20,7 @@ namespace FoodOrderDotNetCore.Areas.Admin
         public async Task<IActionResult> Index()
         {
 
-            return View( await _db.Category.ToListAsync());
+            return View(await _db.Category.ToListAsync());
         }
     }
 }

@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Categoty\" />
     <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>
