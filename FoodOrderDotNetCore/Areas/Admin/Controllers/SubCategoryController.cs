@@ -5,13 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FoodOrderDotNetCore.Models.ViewModels;
+    
 
-namespace FoodOrderDotNetCore.Areas.Admin.Controllers
-{
+  namespace FoodOrderDotNetCore.Areas.Admin.Controllers
+     {
+
     [Area("Admin")]
     public class SubCategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
+
         public SubCategoryController(ApplicationDbContext db)
         {
             _db = db;
@@ -23,5 +27,48 @@ namespace FoodOrderDotNetCore.Areas.Admin.Controllers
             var subCategories = await _db.SubCategory.Include(s=>s.Category).ToListAsync();
             return View(subCategories);
         }
+
+        //get -create
+        public async Task<IActionResult> Create()
+        {
+            SubCategoryAndCategoryViewModel model = new SubCategoryAndCategoryViewModel()
+            {
+                CategoryList = await _db.Category.ToListAsync(),
+                SubCategory = new Models.SubCategory(),
+                SubCategoryList = await _db.SubCategory.OrderBy(p => p.Name).Select(p => p.Name).Distinct().ToListAsync()
+            };
+            return View(model);
+        }
+        //Post-create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(SubCategoryAndCategoryViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var doesSubCategoryExists = _db.SubCategory.Include(s => s.Category).Where(s => s.Name == model.SubCategory.Name && s.Category.Id == model.SubCategory.CategoryId);
+                if (doesSubCategoryExists.Count()>0)
+                {
+                    //error
+                }
+                else
+                {
+                    _db.SubCategory.Add(model.SubCategory);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            SubCategoryAndCategoryViewModel modelVM = new SubCategoryAndCategoryViewModel()
+            {
+                CategoryList = await _db.Category.ToListAsync(),
+                SubCategory = model.SubCategory,
+                SubCategoryList = await _db.SubCategory.OrderBy(p => p.Name).Select(p=>p.Name).ToListAsync()
+
+            };
+            return View(modelVM);
+
+        }
+
+
     }
 }
