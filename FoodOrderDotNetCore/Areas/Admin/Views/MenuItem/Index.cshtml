@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Category>
+﻿@model IEnumerable<MenuItem>
 
 @{
     ViewData["Title"] = "Index";
@@ -10,7 +10,7 @@
 <div class="border backgroundWhite">
     <div class="row">
         <div class="col-6">
-            <h2 class="text-info"> Category List</h2>
+            <h2 class="text-info"> Menu Item List</h2>
         </div>
         <div class="col-6 text-right">
             <partial name="_CreateButtonPartial" />
@@ -25,6 +25,15 @@
                     <th>
                         @Html.DisplayNameFor(m => m.Name)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.Price)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.CategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(m => m.SubCategoryId)
+                    </th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -35,6 +44,15 @@
                             @Html.DisplayFor(m => item.Name)
                         </td>
                         <td>
+                            @Html.DisplayFor(m => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.Category.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(m => item.SubCategory.Name)
+                        </td>
+                        <td>
                             <partial name="_TableButtonPartial" model="item.Id" />
                         </td>
                     </tr>
@@ -43,7 +61,7 @@
         }
         else
         {
-            <p>No category exists...</p>
+            <p>No menu item exists...</p>
         }
     </div>
 </div>
