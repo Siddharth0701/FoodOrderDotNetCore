@@ -1,5 +1,8 @@
-﻿using FoodOrderDotNetCore.Models;
+﻿using FoodOrderDotNetCore.Data;
+using FoodOrderDotNetCore.Models;
+using FoodOrderDotNetCore.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -12,16 +15,29 @@ namespace FoodOrderDotNetCore.Controllers
     [Area("Customer")]
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext _db;
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController( ApplicationDbContext db, ILogger<HomeController> logger)
         {
-            _logger = logger;
+            _db = db;
+            _logger=logger;
         }
 
-        public IActionResult Index()
+        //public HomeController(ILogger<HomeController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        public async Task<IActionResult> Index()
         {
-            return View();
+            IndexViewModel indexVM = new IndexViewModel()
+            {
+                MenuItem = await _db.MenuItem.Include(m => m.Category).Include(m => m.SubCategory).ToListAsync(),
+                Category = await _db.Category.ToListAsync(),
+                Coupon = await _db.Coupon.Where(c=>c.IsActive==true).ToListAsync()
+            };
+
+         return View(indexVM);
         }
 
         public IActionResult Privacy()
