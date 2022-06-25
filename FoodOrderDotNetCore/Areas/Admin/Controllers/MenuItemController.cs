@@ -2,6 +2,7 @@
 using FoodOrderDotNetCore.Models;
 using FoodOrderDotNetCore.Models.ViewModels;
 using FoodOrderDotNetCore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace FoodOrderDotNetCore.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class MenuItemController : Controller
     {
         private readonly ApplicationDbContext _db;

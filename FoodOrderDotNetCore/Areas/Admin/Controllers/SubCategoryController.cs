@@ -8,11 +8,14 @@ using System.Threading.Tasks;
 using FoodOrderDotNetCore.Models.ViewModels;
 using FoodOrderDotNetCore.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
+using FoodOrderDotNetCore.Utility;
 
 namespace FoodOrderDotNetCore.Areas.Admin.Controllers
      {
 
     [Area("Admin")]
+    [Authorize(Roles = SD.ManagerUser)]
     public class SubCategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
